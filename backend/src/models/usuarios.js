@@ -14,10 +14,10 @@ const Usuarios = db.sequelize.define('usuarios',{
         type: db.Sequelize.DATEONLY
     },
     cep: {
-        type: db.Sequelize.STRING
+        type: db.Sequelize.INTEGER
     },
     numero: {
-        type: db.Sequelize.STRING
+        type: db.Sequelize.INTEGER
     },
     complemento: {
         type: db.Sequelize.STRING

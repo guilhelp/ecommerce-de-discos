@@ -4,3 +4,4 @@ npm install --save sequelize
 npm install --save mysql2
 npm install nodemon -g
 npm install jsonwebtoken
+npm install bcrypt
