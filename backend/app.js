@@ -11,6 +11,14 @@ app.use(bodyParser.urlencoded({ extended: true }));
 const jwt = require('jsonwebtoken');
 const SECRET = 'secretkey';
 
+// database
+const db = require("./src/database/banco");
+
+// tables
+const usuarios = require("./src/models/usuarios");
+const produtos = require("./src/models/produtos");
+const carrinho = require("./src/models/carrinho");
+
 // Routes
 
 // index route
