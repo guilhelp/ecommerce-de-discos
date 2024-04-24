@@ -22,6 +22,9 @@ const Carrinho = require("./models/carrinho");
 // cryptography
 const bcrypt = require('bcrypt');
 
+// middleware
+const withAuth = require('./middleware/withAuth');
+
 // Routes
 
 // index route
@@ -71,15 +74,23 @@ app.post('/register', async (req, res) => {
       complemento
     });
 
-    res.status(201).json({ message: 'Successfully registered users', usuario: newUser });
+    newUser.setDataValue('senha', undefined);
+    const token = jwt.sign({ userId: newUser.id, sub: newUser.email }, SECRET, { expiresIn: '1h' });
+    res.status(201).json({ message: 'Successfully registered users', usuario: newUser, token });
   } catch (error) {
     console.error('Error registering user:', error);
     res.status(500).json({ error: 'Error registering user:' });
   }
 });
 
+
+app.get("/auth", withAuth, (req, res) => {
+  console.log("res.locals.email", res.locals.email)
+  return res.json({userId: res.locals.userId, email: res.locals.email})
+})
+
 // logout route
-app.post('/logout', (req, res) => { 
+app.post('/logout', withAuth, (req, res) => { 
     res.send('Logout success');
 });
 
