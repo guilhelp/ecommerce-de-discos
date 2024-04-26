@@ -5,3 +5,4 @@ npm install --save mysql2
 npm install nodemon -D
 npm install jsonwebtoken
 npm install bcrypt
+npm install dotenv
