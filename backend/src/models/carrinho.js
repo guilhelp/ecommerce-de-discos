@@ -4,19 +4,10 @@ const Produtos = require("./produtos")
 const Usuarios = require("./usuarios")
 
 const Carrinho = db.sequelize.define('carrinho',{
-    produtoId : {
+    cartId: {
         type: db.Sequelize.INTEGER,
-        references: {
-            model: Produtos,
-            key: 'id'
-        }
-    },
-    usuarioId:{
-        type: db.Sequelize.INTEGER,
-        references: {
-            model: Usuarios,
-            key: 'id'
-        }
+        primaryKey: true,
+        autoIncrement: true
     },
     quantidade : {
         type: db.Sequelize.INTEGER
@@ -26,7 +17,7 @@ const Carrinho = db.sequelize.define('carrinho',{
     tableName: 'carrinho',
 });
 
-Usuarios.belongsToMany(Produtos, {through: 'carrinho'});
-Produtos.belongsToMany(Usuarios, {through: 'carrinho'});
+Carrinho.belongsTo(Produtos, {foreignKey: 'produtoId'});
+Carrinho.belongsTo(Usuarios, {foreignKey: 'usuarioId'});
 
 module.exports = Carrinho

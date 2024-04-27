@@ -1,9 +1,8 @@
 const jwt = require('jsonwebtoken');
-const SECRET = 'secretkey';
+const SECRET = process.env.SECRET_KEY;
 
 async function withAuth(req, res, next) {
     const token = req.headers["authorization"].split(" ")[1];
-    console.log('Token:', token)
     try {
         const {payload} = jwt.verify(token, SECRET, {complete: true});
         console.log(payload.email);

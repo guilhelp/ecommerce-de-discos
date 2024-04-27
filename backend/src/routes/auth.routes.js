@@ -10,6 +10,10 @@ authRouter.post('/register', async (req, res) => {
     try {
         const { nome, email, senha, data_nascimento, cep, numero, complemento } = req.body;
 
+        if (!nome || !email || !senha || !data_nascimento || !cep || !numero || !complemento) {
+            return res.status(400).json({ error: 'Fill in all fields!' });
+        }
+
         const alreadyUser = await Usuarios.findOne({ where: { email } });
         if (alreadyUser) {
             return res.status(400).json({ error: 'Email has already been registered' });
@@ -28,7 +32,7 @@ authRouter.post('/register', async (req, res) => {
         });
 
         newUser.setDataValue('senha', undefined);
-        const token = jwt.sign({ userId: newUser.id, sub: newUser.email }, SECRET, { expiresIn: '1h' });
+        const token = jwt.sign({ userId: newUser.usuarioId, sub: newUser.email }, SECRET, { expiresIn: '1h' });
         res.status(201).json({ message: 'Successfully registered users', usuario: newUser, token });
     } catch (error) {
         console.error('Error registering user:', error);
@@ -47,7 +51,7 @@ authRouter.post('/login', async (req, res) => {
         if (!passwordCorrect) {
             return res.status(401).json({ error: 'Wrong password', auth: false });
         }
-        const token = jwt.sign({ userId: user.id, sub: user.email }, SECRET, { expiresIn: '1h' });
+        const token = jwt.sign({ userId: user.usuarioId, sub: user.email }, SECRET, { expiresIn: '1h' });
         res.json({ token, auth: true });
     } catch (error) {
         console.error('Authentication error:', error);

@@ -1,6 +1,11 @@
 const db = require("../database/banco")
 
 const Usuarios = db.sequelize.define('usuarios',{
+    usuarioId: {
+        type: db.Sequelize.INTEGER,
+        primaryKey: true,
+        autoIncrement: true
+    },
     nome:{
         type: db.Sequelize.STRING
     },

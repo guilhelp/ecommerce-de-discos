@@ -1,6 +1,11 @@
 const db = require("../database/banco")
 
 const Produtos = db.sequelize.define('produtos',{
+    productId: {
+        type: db.Sequelize.INTEGER,
+        primaryKey: true,
+        autoIncrement: true
+    },
     nome:{
         type: db.Sequelize.STRING
     },
@@ -8,7 +13,7 @@ const Produtos = db.sequelize.define('produtos',{
         type: db.Sequelize.STRING
     },
     preco:{
-        type: db.Sequelize.STRING
+        type: db.Sequelize.DOUBLE
     },
     imagem:{
         type: db.Sequelize.STRING
