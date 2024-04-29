@@ -1,72 +1,97 @@
-const express = require('express');
-const cartRouter = express.Router();
-const withAuth = require('../middleware/withAuth');
-const Carrinho = require('../models/carrinho');
-const Produtos = require('../models/produtos');
+const express = require("express")
+const cartRouter = express.Router()
+const withAuth = require("../middleware/withAuth")
+const Carrinho = require("../models/carrinho")
+const Produtos = require("../models/produtos")
 
-cartRouter.post('/', withAuth, async (req, res) => {
-    try {
-        const { productId, quantidade } = req.body;
-        const userId = res.locals.userId; 
+cartRouter.post("/", withAuth, async (req, res) => {
+	try {
+		const { productId, quantidade } = req.body
+		const userId = res.locals.userId
 
-        const product = await Produtos.findByPk(productId);
-        if (!product) {
-            return res.status(404).json({ message: "Product not founded" });
-        }
+		const product = await Produtos.findByPk(productId)
+		if (!product) {
+			return res.status(404).json({ message: "Product not founded" })
+		}
 
-        const carrinho = await Carrinho.create({
-            usuarioId: userId,
-            produtoId: productId,
-            quantidade: quantidade
-        });
+		const carrinho = await Carrinho.create({
+			usuarioId: userId,
+			produtoId: productId,
+			quantidade: quantidade,
+		})
 
-        res.status(201).json({ message: "Product add with sucess" });
-    } catch (error) {
-        console.error("Error adding product ", error);
-        res.status(500).json({ message: "Error adding product" });
-    }
-});
+		res.status(201).json({ message: "Product add with sucess" })
+	} catch (error) {
+		console.error("Error adding product ", error)
+		res.status(500).json({ message: "Error adding product" })
+	}
+})
 
-cartRouter.delete('/', withAuth, async (req, res) => {
-    try {
-        const { productId } = req.body;
-        const userId = res.locals.userId;
+cartRouter.put("/:id", withAuth, async (req, res) => {
+	try {
+		const { id } = req.params
+		const { quantidade } = req.body
+		const userId = res.locals.userId
 
-        const cartItem = await Carrinho.findOne({
-            where: { usuarioId: userId, produtoId: productId }
-        });
+		await Carrinho.update(
+			{
+				quantidade,
+			},
+			{
+				where: {
+					usuarioId: userId,
+					produtoId: id,
+				},
+			}
+		)
 
-        if (!cartItem) {
-            return res.status(404).json({ message: "Product in the cart not founded" });
-        }
+		res.json({ message: "Cart updated" })
+	} catch (error) {
+		console.error(error)
+		res.status(500).json({ error: "Error updating cart" })
+	}
+})
 
-        await cartItem.destroy();
+cartRouter.delete("/", withAuth, async (req, res) => {
+	try {
+		const { productId } = req.body
+		const userId = res.locals.userId
 
-        res.json({ message: "Product removed from cart successfully" });
-    } catch (error) {
-        console.error("Error removing product from cart", error);
-        res.status(500).json({ message: "Error removing product from cart" });
-    }
-});
+		const cartItem = await Carrinho.findOne({
+			where: { usuarioId: userId, produtoId: productId },
+		})
 
-cartRouter.get('/', withAuth, async (req, res) => {
-    try {
-        const userId = res.locals.userId;
+		if (!cartItem) {
+			return res.status(404).json({ message: "Product in the cart not founded" })
+		}
 
-        const productsInCart = await Carrinho.findAll({
-            where: { usuarioId: userId },
-            include: [{ model: Produtos }]
-        });
+		await cartItem.destroy()
 
-        if(productsInCart.length === 0) {
-            return res.status(404).json({ message: "No products in the cart" });
-        }
+		res.json({ message: "Product removed from cart successfully" })
+	} catch (error) {
+		console.error("Error removing product from cart", error)
+		res.status(500).json({ message: "Error removing product from cart" })
+	}
+})
 
-        res.json(productsInCart);
-    } catch (error) {
-        console.error("Error getting products in cart", error);
-        res.status(500).json({ message: "Error getting products in cart" });
-    }
-});
+cartRouter.get("/", withAuth, async (req, res) => {
+	try {
+		const userId = res.locals.userId
 
-module.exports = cartRouter;
+		const productsInCart = await Carrinho.findAll({
+			where: { usuarioId: userId },
+			include: [{ model: Produtos }],
+		})
+
+		if (productsInCart.length === 0) {
+			return res.status(404).json({ message: "No products in the cart" })
+		}
+
+		res.json(productsInCart)
+	} catch (error) {
+		console.error("Error getting products in cart", error)
+		res.status(500).json({ message: "Error getting products in cart" })
+	}
+})
+
+module.exports = cartRouter
