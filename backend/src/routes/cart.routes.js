@@ -11,7 +11,18 @@ cartRouter.post("/", withAuth, async (req, res) => {
 
 		const product = await Produtos.findByPk(productId)
 		if (!product) {
-			return res.status(404).json({ message: "Product not founded" })
+			return res.status(404).json({ message: "Product not found" })
+		}
+
+		const alreadyExists = await Carrinho.findOne({
+			where: {
+				usuarioId: userId,
+				produtoId: productId,
+			},
+		});
+
+		if (alreadyExists) {
+			return res.status(400).json({ message: "Product already in cart" });
 		}
 
 		const carrinho = await Carrinho.create({
@@ -20,7 +31,7 @@ cartRouter.post("/", withAuth, async (req, res) => {
 			quantidade: quantidade,
 		})
 
-		res.status(201).json({ message: "Product add with sucess" })
+		res.status(201).json({ message: "Product add with success" })
 	} catch (error) {
 		console.error("Error adding product ", error)
 		res.status(500).json({ message: "Error adding product" })
@@ -62,7 +73,7 @@ cartRouter.delete("/", withAuth, async (req, res) => {
 		})
 
 		if (!cartItem) {
-			return res.status(404).json({ message: "Product in the cart not founded" })
+			return res.status(404).json({ message: "Product in the cart not found" })
 		}
 
 		await cartItem.destroy()

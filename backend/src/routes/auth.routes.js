@@ -11,7 +11,7 @@ authRouter.post('/register', async (req, res) => {
         const { nome, email, senha, data_nascimento, cep, numero, complemento } = req.body;
 
         if (!nome || !email || !senha || !data_nascimento || !cep || !numero || !complemento) {
-            return res.status(400).json({ error: 'Fill in all fields!' });
+            return res.status(400).json({ error: 'Missing params' });
         }
 
         const alreadyUser = await Usuarios.findOne({ where: { email } });
@@ -36,7 +36,7 @@ authRouter.post('/register', async (req, res) => {
         res.status(201).json({ message: 'Successfully registered users', usuario: newUser, token });
     } catch (error) {
         console.error('Error registering user:', error);
-        res.status(500).json({ error: 'Error registering user:' });
+        res.status(500).json({ error: 'Error registering user: ' + error });
     }
 });
 
@@ -45,12 +45,14 @@ authRouter.post('/login', async (req, res) => {
         const { email, senha } = req.body;
         const user = await Usuarios.findOne({ where: { email } });
         if (!user) {
-            return res.status(401).json({ error: 'Email not founded' });
+            return res.status(401).json({ error: 'Wrong email or password' });
         }
         const passwordCorrect = await bcrypt.compare(senha, user.senha);
+
         if (!passwordCorrect) {
-            return res.status(401).json({ error: 'Wrong password', auth: false });
+            return res.status(401).json({ error: 'Wrong email or password' });
         }
+
         const token = jwt.sign({ userId: user.usuarioId, sub: user.email }, SECRET, { expiresIn: '1h' });
         res.json({ token, auth: true });
     } catch (error) {
@@ -61,7 +63,8 @@ authRouter.post('/login', async (req, res) => {
 
 authRouter.get("/auth", withAuth, (req, res) => {
     console.log("res.locals.email", res.locals.email)
-    return res.json({userId: res.locals.userId, email: res.locals.email})
+    const user = Usuarios.findOne({ where: { email: res.locals.email }, attributes: { exclude: ['senha'] } });
+    res.json(user);
 })
 
 module.exports = authRouter;
