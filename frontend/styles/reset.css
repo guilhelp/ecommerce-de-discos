@@ -1,0 +1,38 @@
+*,
+html,
+body,
+button,
+input,
+select,
+textarea {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	box-sizing: border-box;
+	text-decoration: none;
+	color: #000;
+	font-size: 100%;
+	font-family: "Merriweather", serif;
+	background: none;
+}
+
+button {
+	cursor: pointer;
+}
+
+ol,
+ul {
+	list-style: none;
+}
+
+img,
+video,
+svg {
+	display: block;
+}
+
+img,
+video {
+	max-width: 100%;
+	height: auto;
+}

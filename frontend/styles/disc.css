@@ -1,0 +1,50 @@
+main {
+	padding: 20px;
+	max-width: 1280px;
+	width: 100%;
+	margin: 100px auto 0;
+	display: flex;
+}
+
+.wrapper {
+	margin: 0 auto;
+	display: flex;
+	flex-direction: column;
+	column-gap: 24px;
+}
+
+.disc-image {
+	border-radius: 8px;
+	max-width: 480px;
+}
+
+.disc-info {
+	margin-top: 24px;
+}
+
+.disc-info__title {
+	font-size: 24px;
+}
+
+.disc-info__price {
+	margin-top: 8px;
+	font-size: 20px;
+}
+
+.disc-info__description {
+	margin-top: 12px;
+}
+
+.disc-info__cart {
+	margin-top: 24px;
+}
+
+@media screen and (min-width: 1024px) {
+	.wrapper {
+		flex-direction: row;
+	}
+
+	.disc-image {
+		max-width: 560px;
+	}
+}

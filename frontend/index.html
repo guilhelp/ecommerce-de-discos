@@ -12,10 +12,10 @@
 		/>
 		<link rel="stylesheet" href="./styles/reset.css" />
 		<link rel="stylesheet" href="./styles/global.css" />
-		<link rel="stylesheet" href="./styles/disc.css" />
+		<link rel="stylesheet" href="./styles/home.css" />
 
 		<script src="./js/script.js" defer></script>
-		<script src="./js/disc.js" defer></script>
+		<script src="./js/home.js" defer></script>
 	</head>
 	<body>
 		<header id="header" class="header">
@@ -103,33 +103,20 @@
 		</header>
 
 		<main>
-			<div class="wrapper">
-				<img id="image" src="" alt="" class="disc-image" />
-				<div class="disc-info">
-					<h1 id="title" class="disc-info__title">Madonna - Bedtime Stories</h1>
-					<p id="price" class="disc-info__price">R$ 100,00</p>
-					<p id="description" class="disc-info__description">
-						Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugiat enim aspernatur
-						distinctio blanditiis voluptate quia ex optio facilis iure. Perferendis quasi, ullam
-						at earum repellat officiis numquam hic libero iure.
-					</p>
-					<div class="disc-info__cart">
-						<button class="button" id="add-to-cart-button">Adicionar ao carrinho</button>
-						<select name="" id="quantity" class="select">
-							<option value="1">1</option>
-							<option value="2">2</option>
-							<option value="3">3</option>
-							<option value="4">4</option>
-							<option value="5">5</option>
-							<option value="6">6</option>
-							<option value="7">7</option>
-							<option value="8">8</option>
-							<option value="9">9</option>
-							<option value="10">10</option>
-						</select>
-					</div>
-				</div>
-			</div>
+			<section id="featured-section" class="discs-section">
+				<h1 class="discs-section__title">Destaques</h1>
+				<div class="discs-section__grid"></div>
+			</section>
+
+			<section id="news-section" class="discs-section">
+				<h1 class="discs-section__title">Novidades</h1>
+				<div class="discs-section__grid"></div>
+			</section>
+
+			<section id="best-section" class="discs-section">
+				<h1 class="discs-section__title">Melhores</h1>
+				<div class="discs-section__grid"></div>
+			</section>
 		</main>
 
 		<div id="loading" class="loading loading--active">

@@ -61,9 +61,9 @@ authRouter.post('/login', async (req, res) => {
     }
 });
 
-authRouter.get("/auth", withAuth, (req, res) => {
+authRouter.get("/auth", withAuth, async (req, res) => {
     console.log("res.locals.email", res.locals.email)
-    const user = Usuarios.findOne({ where: { email: res.locals.email }, attributes: { exclude: ['senha'] } });
+    const user = await Usuarios.findOne({ where: { email: res.locals.email }, attributes: { exclude: ['senha'] } });
     res.json(user);
 })
 

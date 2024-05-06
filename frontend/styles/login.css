@@ -1,0 +1,52 @@
+main {
+	padding: 20px;
+}
+
+.form {
+	margin: 100px auto 0;
+	border: 1px solid var(--gray-200);
+	border-radius: 8px;
+	padding: 24px;
+	max-width: 600px;
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.form__title {
+	font-size: 20px;
+	margin-bottom: 12px;
+	text-align: center;
+}
+
+.form__link {
+	margin-top: 12px;
+	text-align: center;
+	font-size: 14px;
+}
+
+.form form {
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	row-gap: 24px;
+}
+
+.account-buttons {
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+	margin-top: 12px;
+}
+
+.account-buttons > button {
+	flex: 1;
+}
+
+@media screen and (min-width: 768px) {
+	.account-buttons {
+		flex-direction: row;
+	}
+}

@@ -2,19 +2,24 @@ const form = document.getElementById("form")
 
 form.addEventListener("submit", async (e) => {
 	e.preventDefault()
-	handleLogin()
+	handleRegister()
 })
 
-async function handleLogin() {
+async function handleRegister() {
 	const formData = new FormData(form)
 
 	const data = {
+		nome: formData.get("name"),
 		email: formData.get("email"),
 		senha: formData.get("password"),
+		data_nascimento: formData.get("birthdate"),
+		cep: formData.get("zipcode"),
+		numero: formData.get("number"),
+		complemento: formData.get("complement"),
 	}
 
 	try {
-		const res = await fetch(`${API_URL}/login`, {
+		const res = await fetch(`${API_URL}/register`, {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",
@@ -36,6 +41,6 @@ async function handleLogin() {
 		window.location.href = "./index.html"
 	} catch (error) {
 		console.error(error)
-		alert("Erro ao se autenticar: " + error.message)
+		alert("Erro ao se registrar: " + error.message)
 	}
 }

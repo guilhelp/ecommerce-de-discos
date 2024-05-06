@@ -1,34 +1,38 @@
-const destaquesContainer = document.querySelector("#destaques .container-card") //6
-const preVendaContainer = document.querySelector("#pre-venda .container-card") //6
-const melhoresContainer = document.querySelector("#melhores .container-card") //8
+const featuredSection = document.querySelector("#featured-section .discs-section__grid")
+const newsSection = document.querySelector("#news-section .discs-section__grid")
+const bestSection = document.querySelector("#best-section .discs-section__grid")
 
-async function fetchDiscs() {
-	const res = await fetch("http://localhost:3000/products")
-	const discs = await res.json()
-
-	discs.forEach((disc, index) => {
-		const card = `
-        <a class="card-link" href="disco.html?id=${disc.productId}">
-            <div class="card">
-                <br />
-                <div class="card-content">
-                    <img src="public/images/discs/disco_madonna.png" alt="" />
-                    <p class="disc-title">${disc.nome}</p>
-                    <p class="disc-price">R$ ${disc.preco}</p>
-                </div>
-            </div>
-        </a>
+function renderDiscs(discs) {
+	discs.forEach(({ productId, nome, preco }, index) => {
+		const disc = `
+            <a href="./disco.html?id=${productId}">
+                <article class="disc">
+					<div class="disc__image">
+						<div class="disc__vinyl">
+							<img src="./assets/images/discs/${productId}.png" alt="" />
+						</div>
+					</div>
+                    <h2>${nome}</h2>
+                    <p>R$ ${preco}</p>
+                </article>
+            </a>
         `
+
 		if (index < 6) {
-			destaquesContainer.innerHTML += card
+			featuredSection.innerHTML += disc
 		} else if (index >= 12) {
-			melhoresContainer.innerHTML += card
+			bestSection.innerHTML += disc
 		} else {
-			preVendaContainer.innerHTML += card
+			newsSection.innerHTML += disc
 		}
 	})
-
-	loading.classList.add("disabled")
 }
 
 fetchDiscs()
+	.then((discs) => {
+		renderDiscs(discs)
+	})
+	.catch((error) => {
+		console.error(error)
+		alert("Erro ao buscar discos")
+	})
